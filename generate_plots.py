@@ -38,6 +38,7 @@ def generate_data(seed):
     sensor_b = rng.normal(loc=27.0, scale=4.5, size=200)
     timestamps = rng.uniform(low=0.0, high=10.0, size=200)
     return sensor_a, sensor_b, timestamps
+
 # Create plot_scatter(sensor_a, sensor_b, timestamps, ax) that draws
 # the scatter plot from the notebook onto the given Axes object.
 # NumPy-style docstring. Modifies ax in place, returns None.
@@ -67,7 +68,8 @@ def plot_scatter(sensor_a, sensor_b, timestamps, ax):
     ax.set_title('Temperature Sensors Over Time')
     ax.legend()
     ax.grid(True, alpha=0.3)
-    # Overlaid histogram of Sensor A and Sensor B temperature distributions.
+
+# Overlaid histogram of Sensor A and Sensor B temperature distributions.
 # NumPy-style docstring. Modifies ax in place, returns None.
 
 def plot_histogram(sensor_a, sensor_b, ax):
@@ -114,14 +116,15 @@ def plot_boxplot(sensor_a, sensor_b, ax):
     -------
     None
     """
-    ax.boxplot([sensor_a, sensor_b], labels=['Sensor A', 'Sensor B'])
+    ax.boxplot([sensor_a, sensor_b], tick_labels=['Sensor A', 'Sensor B'])
     ax.axhline(np.concatenate([sensor_a, sensor_b]).mean(),
                color='red', linestyle='dashed', linewidth=2, label='Overall Mean')
     ax.set_xlabel('Sensor')
     ax.set_ylabel('Temperature (°C)')
     ax.set_title('Sensor Temperature Distribution Comparison')
     ax.legend()
-    # Create main() that generates data, creates a 1x3 subplot figure,
+
+# Create main() that generates data, creates a 2x2 subplot figure,
 # calls each plot function, adjusts layout, and saves as sensor_analysis.png
 # at 150 DPI with tight bounding box.
 
@@ -137,10 +140,11 @@ def main():
     None
     """
     sensor_a, sensor_b, timestamps = generate_data(seed=8986)
-    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-    plot_scatter(sensor_a, sensor_b, timestamps, axes[0])
-    plot_histogram(sensor_a, sensor_b, axes[1])
-    plot_boxplot(sensor_a, sensor_b, axes[2])
+    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+    plot_scatter(sensor_a, sensor_b, timestamps, axes[0, 0])
+    plot_histogram(sensor_a, sensor_b, axes[0, 1])
+    plot_boxplot(sensor_a, sensor_b, axes[1, 0])
+    axes[1, 1].axis('off')
     plt.tight_layout()
     plt.savefig('sensor_analysis.png', dpi=150, bbox_inches='tight')
     print("Saved sensor_analysis.png")
